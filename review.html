@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Review - ReviewHub{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-12">
+        <h2 class="text-3xl font-bold text-professional-gray mb-2 text-center">Submit Your Review</h2>
+        <p class="text-center text-professional-gray opacity-75 mb-8">Your identity has been verified. Share your experience with us.</p>
+        
+        <form method="POST" action="{{ url_for('review') }}" id="reviewForm">
+            <div class="mb-8">
+                <label class="block text-professional-gray font-semibold mb-4 text-lg">Rating</label>
+                <div class="flex justify-center space-x-3">
+                    {% for i in range(1, 6) %}
+                        <input type="radio" name="rating" value="{{ i }}" id="rating{{ i }}" class="hidden peer/rating{{ i }}" required>
+                        <label for="rating{{ i }}" class="cursor-pointer transition transform hover:scale-110">
+                            <svg class="w-12 h-12 text-gray-300 peer-checked/rating{{ i }}:text-primary-blue fill-current hover:text-primary-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <label for="comment" class="block text-professional-gray font-semibold mb-3 text-lg">Your Review</label>
+                <textarea 
+                    name="comment" 
+                    id="comment" 
+                    rows="6" 
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary-blue focus:outline-none text-professional-gray"
+                    placeholder="Tell us about your experience..."
+                    required
+                ></textarea>
+            </div>
+            
+            <button type="submit" class="w-full py-4 bg-primary-blue text-white text-xl font-semibold rounded-lg hover:bg-blue-600 transition shadow-lg">
+                Submit Review
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('input[name="rating"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const allStars = document.querySelectorAll('label[for^="rating"] svg');
+            const rating = parseInt(this.value);
+            
+            allStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-primary-blue');
+                } else {
+                    star.classList.add('text-gray-300');
+                    star.classList.remove('text-primary-blue');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

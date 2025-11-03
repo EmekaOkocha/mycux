@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Identity Verification - ReviewHub{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+        <div class="mb-8">
+            <svg class="w-24 h-24 mx-auto text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-professional-gray mb-4">Identity Verification</h2>
+        <p class="text-lg text-professional-gray opacity-75 mb-8">
+            To ensure one review per person, we need to verify your unique identity using our secure biometric simulation system.
+        </p>
+        
+        <div class="bg-blue-50 rounded-lg p-6 mb-8 text-left">
+            <h3 class="font-semibold text-professional-gray mb-3">How it works:</h3>
+            <ul class="space-y-2 text-professional-gray opacity-75">
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-primary-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>We create a unique, non-reversible identity hash</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-primary-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Your identity is checked against our database</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-primary-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>You receive a secure session to submit your review</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-primary-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>No personal data is stored or shared</span>
+                </li>
+            </ul>
+        </div>
+        
+        <form method="POST" action="{{ url_for('verify') }}">
+            <button type="submit" class="w-full py-4 bg-primary-blue text-white text-xl font-semibold rounded-lg hover:bg-blue-600 transition shadow-lg transform hover:scale-105">
+                Start Biometric Verification
+            </button>
+        </form>
+        
+        <p class="text-sm text-professional-gray opacity-60 mt-6">
+            This MVP uses browser fingerprinting (User-Agent, IP, Language) to simulate biometric identity. Production would use actual biometric authentication (fingerprint, face recognition, etc.).
+        </p>
+    </div>
+</div>
+{% endblock %}
