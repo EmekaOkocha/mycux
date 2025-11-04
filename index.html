@@ -7,20 +7,9 @@
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Load Lucide Icons (Corrected Initialization) -->
-    <script type="module">
-        // Using unpkg for stable direct ES module access, targeting the specific ES module bundle 
-        // that exports both createIcons and all the named icon components. (FIXED)
-        import { createIcons, Search, ChevronDown, ChevronUp, User, Lock, Layers } from 'https://unpkg.com/lucide@latest/dist/esm/lucide.js';
-        
-        // Expose the icon definitions and the createIcons function globally
-        const iconsMap = { Search, ChevronDown, ChevronUp, User, Lock, Layers };
-        window.lucide = iconsMap;
-        window.lucide.createIcons = (options) => createIcons(options);
-        
-        // Initial icon rendering
-        window.addEventListener('load', () => createIcons({ icons: iconsMap }));
-    </script>
+    <!-- Load Lucide Icons Core Library (Standard UMD/IIFE Load - FIX for Vercel/CDN Issues) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
     <style>
         /* Define the primary font and some simple custom styles */
         body { font-family: 'Inter', sans-serif; }
@@ -38,8 +27,8 @@
         <!-- Page content (Auth, Reviews, Admin) will be inserted here -->
     </main>
 
-    <!-- Static Application Logic -->
-    <script type="module">
+    <!-- Application Logic -->
+    <script>
         // --- Application State (Simplified) ---
         let appState = {
             currentPage: 'reviews', // Default to reviews for a live demo look
@@ -48,15 +37,35 @@
         // --- Utility Functions ---
 
         /**
-         * Safely renders Lucide icons using the global window.lucide object.
+         * Renders the Lucide icon tag. Note: The actual SVG drawing happens when createIcons() is called.
+         * We no longer need to check window.lucide here, just output the attribute.
          * @param {string} name - The name of the icon (e.g., 'User').
          * @param {string} classes - Tailwind CSS classes for styling.
-         * @returns {string} HTML string for the icon.
+         * @returns {string} HTML string for the icon placeholder.
          */
         const renderIcon = (name, classes) => {
-            const Icon = window.lucide && window.lucide[name]; 
-            return Icon ? `<svg data-lucide="${name}" class="${classes}"></svg>` : '';
+            // Check if the icon name is one we need to load (prevents errors if we try to render an unlisted icon)
+            const availableIcons = ['Search', 'ChevronDown', 'ChevronUp', 'User', 'Lock', 'Layers'];
+            if (!availableIcons.includes(name)) return '';
+            
+            // Return the placeholder SVG tag. Lucide's global script will replace this with the full SVG on createIcons() call.
+            return `<svg data-lucide="${name.toLowerCase()}" class="${classes}"></svg>`;
         };
+
+        /**
+         * Triggers Lucide to render all SVG icons based on data-lucide attributes.
+         * This must be called after any innerHTML update.
+         */
+        const triggerIconRender = () => {
+            // Use the global lucide object exposed by the UMD script load.
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                 // We pass specific icons to prevent Lucide from searching the whole document for every possible icon, improving performance slightly.
+                 window.lucide.createIcons({
+                     icons: { Search: true, ChevronDown: true, ChevronUp: true, User: true, Lock: true, Layers: true },
+                 });
+            }
+        };
+
 
         const updateState = (newState) => {
             Object.assign(appState, newState);
@@ -126,10 +135,8 @@
                 btn.onclick = () => updateState({ currentPage: btn.dataset.page });
             });
             
-            // Re-render icons in the dynamic navbar content
-            if (window.lucide && window.lucide.createIcons) {
-                 window.lucide.createIcons({ icons: window.lucide });
-            }
+            // Trigger icon rendering for the dynamically loaded navbar
+            triggerIconRender();
         };
 
         const renderAuthPage = () => {
@@ -260,10 +267,8 @@
             }
 
             mainContent.innerHTML = pageHtml;
-            // Re-render icons in the dynamic content
-            if (window.lucide && window.lucide.createIcons) {
-                 window.lucide.createIcons({ icons: window.lucide });
-            }
+            // Trigger icon rendering for the dynamically loaded page content
+            triggerIconRender();
         };
 
         // Initialize the application on window load
