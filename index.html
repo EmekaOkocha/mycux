@@ -7,9 +7,6 @@
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Load Lucide Icons Core Library (Standard UMD/IIFE Load - FIX for Vercel/CDN Issues) -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
     <style>
         /* Define the primary font and some simple custom styles */
         body { font-family: 'Inter', sans-serif; }
@@ -25,6 +22,7 @@
 
     <main id="main-content" class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 page-container">
         <!-- Page content (Auth, Reviews, Admin) will be inserted here -->
+        <div class="text-center p-12 text-slate-500">Loading application...</div>
     </main>
 
     <!-- Application Logic -->
@@ -34,36 +32,42 @@
             currentPage: 'reviews', // Default to reviews for a live demo look
         };
 
-        // --- Utility Functions ---
+        // --- Utility Functions: Inline SVG Icons (Resilience Fix) ---
 
         /**
-         * Renders the Lucide icon tag. Note: The actual SVG drawing happens when createIcons() is called.
-         * We no longer need to check window.lucide here, just output the attribute.
-         * @param {string} name - The name of the icon (e.g., 'User').
-         * @param {string} classes - Tailwind CSS classes for styling.
-         * @returns {string} HTML string for the icon placeholder.
+         * Returns the SVG path data for a given icon name.
          */
-        const renderIcon = (name, classes) => {
-            // Check if the icon name is one we need to load (prevents errors if we try to render an unlisted icon)
-            const availableIcons = ['Search', 'ChevronDown', 'ChevronUp', 'User', 'Lock', 'Layers'];
-            if (!availableIcons.includes(name)) return '';
-            
-            // Return the placeholder SVG tag. Lucide's global script will replace this with the full SVG on createIcons() call.
-            return `<svg data-lucide="${name.toLowerCase()}" class="${classes}"></svg>`;
+        const getSvgPath = (name) => {
+            // Using Lucide-compatible SVG paths directly
+            const icons = {
+                'Search': '<path d="M10 10m-7 0a7 7 7 0 1 0 14 0a7 7 7 0 1 0 -14 0"/><path d="m21 21l-4.3-4.3"/>',
+                'User': '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+                'Lock': '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+                'Layers': '<path d="m12.83 2.9a1 1 0 0 0-1.66 0l-7.5 11.5a1 1 0 0 0 .83 1.5h15.34a1 1 0 0 0 .83-1.5z"/><path d="m2 17l10 5l10-5"/>',
+                'ChevronDown': '<path d="m6 9l6 6l6-6"/>',
+                'ChevronUp': '<path d="m18 15l-6-6l-6 6"/>',
+            };
+            return icons[name] || '';
         };
 
         /**
-         * Triggers Lucide to render all SVG icons based on data-lucide attributes.
-         * This must be called after any innerHTML update.
+         * Renders the complete, self-contained SVG element using the path data.
+         * @param {string} name - The name of the icon (e.g., 'User').
+         * @param {string} classes - Tailwind CSS classes for styling.
+         * @returns {string} Complete SVG element as a string.
          */
-        const triggerIconRender = () => {
-            // Use the global lucide object exposed by the UMD script load.
-            if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                 // We pass specific icons to prevent Lucide from searching the whole document for every possible icon, improving performance slightly.
-                 window.lucide.createIcons({
-                     icons: { Search: true, ChevronDown: true, ChevronUp: true, User: true, Lock: true, Layers: true },
-                 });
-            }
+        const renderIcon = (name, classes) => {
+            const svgPath = getSvgPath(name);
+            if (!svgPath) return '';
+
+            return `
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round" class="${classes}">
+                    ${svgPath}
+                </svg>
+            `;
         };
 
 
@@ -134,9 +138,6 @@
             document.querySelectorAll('.nav-link').forEach(btn => {
                 btn.onclick = () => updateState({ currentPage: btn.dataset.page });
             });
-            
-            // Trigger icon rendering for the dynamically loaded navbar
-            triggerIconRender();
         };
 
         const renderAuthPage = () => {
@@ -248,30 +249,40 @@
         // --- Main Render Loop ---
 
         const renderApp = () => {
-            renderNavBar();
-            const mainContent = document.getElementById('main-content');
-            
-            let pageHtml = '';
+            try {
+                renderNavBar();
+                const mainContent = document.getElementById('main-content');
+                
+                let pageHtml = '';
 
-            switch (appState.currentPage) {
-                case 'reviews':
-                    pageHtml = renderReviewsPage();
-                    break;
-                case 'admin':
-                    pageHtml = renderAdminPage();
-                    break;
-                case 'auth':
-                default:
-                    pageHtml = renderAuthPage();
-                    break;
+                switch (appState.currentPage) {
+                    case 'reviews':
+                        pageHtml = renderReviewsPage();
+                        break;
+                    case 'admin':
+                        pageHtml = renderAdminPage();
+                        break;
+                    case 'auth':
+                    default:
+                        pageHtml = renderAuthPage();
+                        break;
+                }
+
+                mainContent.innerHTML = pageHtml;
+            } catch (error) {
+                // Display a visible error message if the JS crashes during render
+                document.getElementById('main-content').innerHTML = `
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-lg mx-auto mt-20" role="alert">
+                        <strong class="font-bold">Application Error!</strong>
+                        <span class="block sm:inline">Could not render the page. See console for details.</span>
+                        <p class="mt-2 text-sm">${error.message}</p>
+                    </div>
+                `;
+                console.error("Fatal Render Error:", error);
             }
-
-            mainContent.innerHTML = pageHtml;
-            // Trigger icon rendering for the dynamically loaded page content
-            triggerIconRender();
         };
 
-        // Initialize the application on window load
+        // Initialize the application immediately after the script loads
         window.addEventListener('load', renderApp);
     </script>
 </body>
