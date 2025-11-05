@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mycux - Login</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for the Inter font and color scheme -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3b82f6', // Indigo Blue
+                        'secondary': '#1f2937', // Dark Gray/Slate
+                        'accent': '#fbbf24', // Amber/Yellow
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // Function to toggle between User and Business login forms
+        function showLogin(mode) {
+            const userForm = document.getElementById('user-form');
+            const businessForm = document.getElementById('business-form');
+            const userBtn = document.getElementById('user-btn');
+            const businessBtn = document.getElementById('business-btn');
+
+            // Reset button styles
+            [userBtn, businessBtn].forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-white', 'scale-[1.02]', 'shadow-lg', 'border-primary');
+                btn.classList.add('text-gray-700', 'bg-white', 'hover:bg-gray-50', 'border-gray-300');
+            });
+
+            // Show selected form and apply active button styles
+            if (mode === 'user') {
+                userForm.classList.remove('hidden');
+                businessForm.classList.add('hidden');
+                
+                userBtn.classList.add('bg-primary', 'text-white', 'scale-[1.02]', 'shadow-lg', 'border-primary');
+                userBtn.classList.remove('text-gray-700', 'bg-white', 'hover:bg-gray-50', 'border-gray-300');
+            } else if (mode === 'business') {
+                businessForm.classList.remove('hidden');
+                userForm.classList.add('hidden');
+
+                businessBtn.classList.add('bg-primary', 'text-white', 'scale-[1.02]', 'shadow-lg', 'border-primary');
+                businessBtn.classList.remove('text-gray-700', 'bg-white', 'hover:bg-gray-50', 'border-gray-300');
+            }
+        }
+
+        // Set User Login as the default view on load
+        window.onload = () => showLogin('user');
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Navbar with Home Link -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+            <!-- Logo (Links to index.html) -->
+            <a href="index.html" class="flex items-center space-x-2 text-2xl font-extrabold text-primary tracking-tight rounded-lg p-1 transition duration-150 ease-in-out hover:text-blue-700">
+                <!-- Simple Logo SVG -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                <span>Mycux</span>
+            </a>
+            
+            <!-- Home Button -->
+            <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition duration-150 ease-in-out px-3 py-2 rounded-lg border border-transparent hover:border-gray-200">
+                Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area: Centered Dual Login -->
+    <div class="flex flex-col items-center justify-start py-12 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-lg">
+            
+            <div class="text-center mb-8">
+                <h2 class="mt-4 text-3xl font-bold text-gray-900">
+                    Welcome Back!
+                </h2>
+                <p class="text-gray-500 mt-2">Choose your login path to continue.</p>
+            </div>
+
+            <!-- Mode Selection Toggles -->
+            <div class="flex space-x-4 mb-8">
+                <button id="user-btn" onclick="showLogin('user')"
+                        class="flex-1 px-4 py-3 border-2 rounded-xl text-lg font-semibold transition duration-200 transform">
+                    User Login
+                </button>
+                <button id="business-btn" onclick="showLogin('business')"
+                        class="flex-1 px-4 py-3 border-2 rounded-xl text-lg font-semibold transition duration-200 transform">
+                    Business Login
+                </button>
+            </div>
+
+
+            <!-- User Login Form (Default) -->
+            <div id="user-form" class="bg-white p-8 rounded-xl shadow-2xl border border-gray-200 hidden">
+                <p class="text-center text-sm text-gray-500 mb-6">Log in with your anonymous credentials.</p>
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('User Login Successful! (Mock)'); window.location.href='index.html';">
+                    
+                    <div>
+                        <label for="user-username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <div class="mt-1">
+                            <input id="user-username" name="user-username" type="text" autocomplete="username" required 
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   placeholder="Your anonymous username">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="user-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1">
+                            <input id="user-password" name="user-password" type="password" autocomplete="current-password" required 
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   placeholder="Your secure password">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" 
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150">
+                            Log In as User
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Don't have an account?
+                        <a href="signup.html" class="font-medium text-primary hover:text-blue-700 transition duration-150">
+                            Sign Up
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Business Login Form -->
+            <div id="business-form" class="bg-white p-8 rounded-xl shadow-2xl border border-gray-200 hidden">
+                <p class="text-center text-sm text-gray-500 mb-6">Access your business dashboard.</p>
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Business Login Successful! (Mock)'); window.location.href='index.html';">
+                    
+                    <div>
+                        <label for="business-email" class="block text-sm font-medium text-gray-700">Business Email</label>
+                        <div class="mt-1">
+                            <input id="business-email" name="business-email" type="email" autocomplete="email" required 
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   placeholder="e.g., admin@yourcompany.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="business-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1">
+                            <input id="business-password" name="business-password" type="password" autocomplete="current-password" required 
+                                   class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   placeholder="Your business password">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" 
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150">
+                            Log In as Business
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-500 max-w-md mx-auto">
+                    Note: User data remains anonymous and is stored using cryptographic hashes. Business accounts require valid contact information for verification purposes.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
