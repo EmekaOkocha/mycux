@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mycux - About Us</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for the Inter font and color scheme -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3b82f6', // Indigo Blue
+                        'secondary': '#1f2937', // Dark Gray/Slate
+                        'accent': '#fbbf24', // Amber/Yellow
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Navbar with Home Link -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+            <!-- Logo (Links to index.html) -->
+            <a href="index.html" class="flex items-center space-x-2 text-2xl font-extrabold text-primary tracking-tight rounded-lg p-1 transition duration-150 ease-in-out hover:text-blue-700">
+                <!-- Simple Logo SVG -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                <span>Mycux</span>
+            </a>
+            
+            <!-- Home Button -->
+            <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-primary transition duration-150 ease-in-out px-3 py-2 rounded-lg border border-transparent hover:border-gray-200">
+                Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area: About Mycux -->
+    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl">
+                The Mycux Promise: Privacy Meets Community
+            </h1>
+            <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                Mycux is built on a foundation of cryptographic anonymity, ensuring that your identity remains private while you contribute to the community.
+            </p>
+        </header>
+
+        <!-- Feature Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Feature 1: Anonymity-First Signup -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-primary transform hover:scale-[1.01] transition duration-300">
+                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary mb-4">
+                    <!-- Lock Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6-6h6m6 0h-6m-6-6h6m6 0h-6m-4 12h14a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">Anonymity-First Signup</h2>
+                <p class="text-gray-600">
+                    When you sign up, your personal details (like name and email) are **immediately hashed** using a secure, one-way cryptographic function.
+                    We never store the original data. Instead, only your unique, anonymous, hashed ID is retained, making sure your **Personally Identifiable Information (PII) never touches our database** in its readable form.
+                </p>
+            </div>
+
+            <!-- Feature 2: Secure Login Simulation -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-accent transform hover:scale-[1.01] transition duration-300">
+                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 text-accent mb-4">
+                    <!-- Key Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2v10a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2h6zm0 0V5a2 2 0 00-2-2H9a2 2 0 00-2 2v2m8 0h-6"></path></svg>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">Login Simulation</h2>
+                <p class="text-gray-600">
+                    Logging in is a **simulation** of identity verification. You provide your credentials, we re-hash them on the fly, and compare the *new* hash against the stored anonymous ID. If they match, you're granted access. This proves your identity without ever exposing or storing your original sensitive login information.
+                </p>
+            </div>
+
+            <!-- Feature 3: Empowered Review Submission -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-secondary transform hover:scale-[1.01] transition duration-300">
+                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-secondary/10 text-secondary mb-4">
+                    <!-- Chat Icon -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.565C5.352 15.602 7.009 15 9 15h3.992c4.97 0 9-3.582 9-8s-4.03-8-9-8-9 3.582-9 8h.01"></path></svg>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">Review Submission</h2>
+                <p class="text-gray-600">
+                    Once logged in, users gain the ability to **submit honest product reviews**. Because your identity is cryptographically shielded, you can trust that your opinions are tied only to your anonymous ID, allowing for genuine, unbiased community input.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
